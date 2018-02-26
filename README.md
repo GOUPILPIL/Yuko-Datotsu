@@ -15,3 +15,5 @@ Ressource et lien concernant le projet :
 
 > First Push with some information
 
+>Objectif du premier sprint (date a definir)
+>Mise en place d'un systeme d'identification fonctionelle avec verification mail
