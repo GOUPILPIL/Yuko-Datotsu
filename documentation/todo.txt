@@ -1,0 +1,4 @@
+-> Tenter d'installer SASS / JS / BOOSTRAP en dur
+-> Commencer le front (Navbar / Footer)
+-> Finir la mise en page des form de connection
+-> Entity manager bdd
