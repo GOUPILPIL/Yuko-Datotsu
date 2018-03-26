@@ -6,8 +6,49 @@
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <a href="{{ path('homepage') }}" class="navbar-brand">Yuko datotsu</a>
+            <div class="d-flex flex-row order-2 order-lg-3 ml-auto">
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item"><a class="nav-link px-2" href="https://twitter.com/GoupilBuchou"><span class="fa fa-twitter"></span></a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="https://www.linkedin.com/in/victor-buchou-587421150/"><span class="fa fa-linkedin"></span></a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="https://github.com/GOUPILPIL"><span class="fa fa-github"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar4">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbar4">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./list.php">Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Club</a>
+                    </li>
+                </ul>
+                <div>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">
+                            <button class="btn btn-outline-success my-2 " style="margin-right: 10px;" type="submit">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</button>
+                        </a>
+                        <a href="{{ path('fos_user_registration_register') }}">
+                            <button class="btn btn-outline-dark  " type="Register">Register</button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
         {% block content %}{% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
