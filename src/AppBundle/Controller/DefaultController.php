@@ -3,14 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Event;
-use FOS\UserBundle\Model\UserInterface;
+use AppBundle\Entity\User;use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class DefaultController extends Controller
 {
@@ -29,24 +30,33 @@ class DefaultController extends Controller
      */
     public function eventCreation(Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Event');
+        $userID = $this->getUser()->getId();
+        $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
+        $UserOjbect = $UserPdo->findOneById($userID);
 
-        $event = $repository->findAll();
+
         $event = new Event();
+
         $form = $this->createFormBuilder($event)
             ->add('name', TextType::class)
+            ->add('description', TextType::class)
+            ->add('address', TextType::class)
+            ->add('lag', NumberType::class)
+            ->add('lng', NumberType::class)
+            ->add('dateStart', DateType::class)
             ->add('save', SubmitType::class, array('label' => 'Save name'))
             ->getForm();
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
-            $userID = $this->getUser()->getId();
             $event->setCreatedAt(new \DateTime());
-            $event->setPostedBy($userID);
-            $em->persist($post);
+            $event->setPostedBy(0);
+            $event->setValidate(1);
+            $event->setUser($UserOjbect);
+            $em->persist($event);
             $em->flush();
-            return $this->redirectToRoute('posts.index');
+            return $this->redirectToRoute('/');
         }
         return $this->render('events/index.html.twig', [
             'form' => $form->createView()

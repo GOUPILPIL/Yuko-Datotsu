@@ -20,6 +20,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="user")
+     */
+    private $events;
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $reputation = 0;
@@ -35,6 +40,7 @@ class User extends BaseUser
 
     public function __construct()
     {
+        $this->events = new ArrayCollection();
         parent::__construct();
     }
 }

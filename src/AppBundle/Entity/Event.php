@@ -22,6 +22,12 @@ class Event
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="events")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=60)
@@ -100,6 +106,30 @@ class Event
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Event
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
