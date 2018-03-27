@@ -1,5 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
 {% if form %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <div class="container col-md-6 offset-md-3" style="padding-top: 5%">
+        <div class="card-outline-secondary">
+            <div class="card card-outline-secondary">
+                <div class="card-header">
+                    <h3 class="mb-0">Add an event</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div>
+                        {{ form_label(form.name) }}
+                        {{ form_errors(form.name) }}
+                        {{ form_widget(form.name) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.description) }}
+                        {{ form_errors(form.description) }}
+                        {{ form_widget(form.description) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.address) }}
+                        {{ form_errors(form.address) }}
+                        {{ form_widget(form.address, {'id': 'autocomplete'}) }}
+                    </div>
+                    <div>
+
+                        {{ form_errors(form.lng) }}
+                        {{ form_widget(form.lng) }}
+                    </div>
+                    <div>
+
+                        {{ form_errors(form.lag) }}
+                        {{ form_widget(form.lag) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.dateStart) }}
+                        {{ form_errors(form.dateStart) }}
+                        {{ form_widget(form.dateStart) }}
+                    </div>
+                    <div>
+                        {{ form_widget(form.save) }}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var placeSearch, autocomplete;
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+                {types: ['geocode']});
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChgkCStI_CzqTWxuteujDUeEBF90it_h8&libraries=places&callback=initAutocomplete"
+            async defer></script>
+
 {% endif %}
+{% endblock %}

@@ -34,9 +34,11 @@
                 </ul>
                 <div>
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path("fos_user_profile_show") }}">
+                            <button class="btn btn-outline-success my-2 " style="margin-right: 10px;" type="submit">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</button>
+                        </a>
                         <a href="{{ path('fos_user_security_logout') }}">
-                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                            <button class="btn btn-outline-danger my-2 " style="margin-right: 10px;" type="submit">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</button>
                         </a>
                     {% else %}
                         <a href="{{ path('fos_user_security_login') }}">

@@ -7,6 +7,7 @@ use AppBundle\Entity\User;use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,8 +42,8 @@ class DefaultController extends Controller
             ->add('name', TextType::class)
             ->add('description', TextType::class)
             ->add('address', TextType::class)
-            ->add('lag', NumberType::class)
-            ->add('lng', NumberType::class)
+            ->add('lag', HiddenType::class)
+            ->add('lng', HiddenType::class)
             ->add('dateStart', DateType::class)
             ->add('save', SubmitType::class, array('label' => 'Save name'))
             ->getForm();
@@ -50,13 +51,19 @@ class DefaultController extends Controller
 
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+            $data = $form["address"]->getData();
             $event->setCreatedAt(new \DateTime());
             $event->setPostedBy(0);
             $event->setValidate(1);
+            $latLong = getLatLong($data);
+            $latitude = $latLong['latitude']?$latLong['latitude']:'0';
+            $longitude = $latLong['longitude']?$latLong['longitude']:'0';
+            $event->setLag($latitude);
+            $event->setLng($longitude);
             $event->setUser($UserOjbect);
             $em->persist($event);
             $em->flush();
-            return $this->redirectToRoute('/');
+            return $this->redirectToRoute('homepage');
         }
         return $this->render('events/index.html.twig', [
             'form' => $form->createView()
@@ -74,5 +81,26 @@ class DefaultController extends Controller
         return new Response(
             '<html><body>Id is = '.$userID.'</body></html>'
         );
+    }
+}
+
+function getLatLong($address){
+    if(!empty($address)){
+        //Formatted address
+        $formattedAddr = str_replace(' ','+',$address);
+        //Send request and receive json data by address
+        $geocodeFromAddr = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddr.'&sensor=true_or_false&key=AIzaSyChgkCStI_CzqTWxuteujDUeEBF90it_h8');
+        $output = json_decode($geocodeFromAddr);
+        //Get latitude and longitute from json data
+        $data['latitude']  = $output->results[0]->geometry->location->lat;
+        $data['longitude'] = $output->results[0]->geometry->location->lng;
+        //Return latitude and longitude of the given address
+        if(!empty($data)){
+            return $data;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
     }
 }
