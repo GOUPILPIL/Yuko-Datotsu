@@ -57,9 +57,9 @@ class Event
     /**
      * @var float
      *
-     * @ORM\Column(name="lag", type="float")
+     * @ORM\Column(name="lat", type="float")
      */
-    private $lag;
+    private $lat;
 
     /**
      * @var float
@@ -211,27 +211,27 @@ class Event
     }
 
     /**
-     * Set lag
+     * Set lat
      *
-     * @param float $lag
+     * @param float $lat
      *
      * @return Event
      */
-    public function setLag($lag)
+    public function setLat($lat)
     {
-        $this->lag = $lag;
+        $this->lat = $lat;
 
         return $this;
     }
 
     /**
-     * Get lag
+     * Get lat
      *
      * @return float
      */
-    public function getLag()
+    public function getLat()
     {
-        return $this->lag;
+        return $this->lat;
     }
 
     /**

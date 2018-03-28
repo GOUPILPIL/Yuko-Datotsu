@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use AppBundle\Utils\GeoHelper;
 
 class DefaultController extends Controller
 {
@@ -30,7 +31,7 @@ class DefaultController extends Controller
     /**
      * @Route("/event/create", name="eventCreation")
      */
-    public function eventCreation(Request $request)
+    public function eventCreation(Request $request,GeoHelper $geoHelper)
     {
         $event = new Event();
 
@@ -38,7 +39,7 @@ class DefaultController extends Controller
             ->add('name', TextType::class)
             ->add('description', TextType::class)
             ->add('address', TextType::class)
-            ->add('lag', HiddenType::class)
+            ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
             ->add('dateStart', DateType::class, array(
                 'widget' => 'single_text'
@@ -60,10 +61,10 @@ class DefaultController extends Controller
             $event->setPostedBy(0);
             $event->setValidate(1);
 
-            $latLong = getLatLong($data);
+            $latLong = $geoHelper->getLatLong($data);
             $latitude = $latLong['latitude']?$latLong['latitude']:'0';
             $longitude = $latLong['longitude']?$latLong['longitude']:'0';
-            $event->setLag($latitude);
+            $event->setLat($latitude);
 
             $event->setLng($longitude);
             $event->setUser($UserOjbect);
@@ -88,26 +89,5 @@ class DefaultController extends Controller
         return new Response(
             '<html><body>Id is = '.$userID.'</body></html>'
         );
-    }
-}
-
-function getLatLong($address){
-    if(!empty($address)){
-        //Formatted address
-        $formattedAddr = str_replace(' ','+',$address);
-        //Send request and receive json data by address
-        $geocodeFromAddr = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddr.'&sensor=true_or_false&key=AIzaSyChgkCStI_CzqTWxuteujDUeEBF90it_h8');
-        $output = json_decode($geocodeFromAddr);
-        //Get latitude and longitute from json data
-        $data['latitude']  = $output->results[0]->geometry->location->lat;
-        $data['longitude'] = $output->results[0]->geometry->location->lng;
-        //Return latitude and longitude of the given address
-        if(!empty($data)){
-            return $data;
-        }else{
-            return false;
-        }
-    }else{
-        return false;
     }
 }
