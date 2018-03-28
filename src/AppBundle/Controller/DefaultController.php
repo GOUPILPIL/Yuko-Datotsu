@@ -57,16 +57,13 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $data = $form["address"]->getData();
 
-            $event->setCreatedAt(new \DateTime());
-            $event->setPostedBy(0);
-            $event->setValidate(1);
-
             $latLong = $geoHelper->getLatLong($data);
             $latitude = $latLong['latitude']?$latLong['latitude']:'0';
             $longitude = $latLong['longitude']?$latLong['longitude']:'0';
-            $event->setLat($latitude);
 
+            $event->setLat($latitude);
             $event->setLng($longitude);
+            
             $event->setUser($UserOjbect);
 
             $em->persist($event);

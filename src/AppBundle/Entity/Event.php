@@ -90,13 +90,6 @@ class Event
     private $createdAt;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="postedBy", type="integer")
-     */
-    private $postedBy;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="validate", type="boolean")
@@ -331,30 +324,6 @@ class Event
     }
 
     /**
-     * Set postedBy
-     *
-     * @param integer $postedBy
-     *
-     * @return Event
-     */
-    public function setPostedBy($postedBy)
-    {
-        $this->postedBy = $postedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get postedBy
-     *
-     * @return int
-     */
-    public function getPostedBy()
-    {
-        return $this->postedBy;
-    }
-
-    /**
      * Set validate
      *
      * @param boolean $validate
@@ -376,6 +345,11 @@ class Event
     public function getValidate()
     {
         return $this->validate;
+    }
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->validate = 1;
     }
 }
 
