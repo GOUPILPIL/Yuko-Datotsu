@@ -26,16 +26,12 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
+
     /**
      * @Route("/event/create", name="eventCreation")
      */
     public function eventCreation(Request $request)
     {
-        $userID = $this->getUser()->getId();
-        $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
-        $UserOjbect = $UserPdo->findOneById($userID);
-
-
         $event = new Event();
 
         $form = $this->createFormBuilder($event)
@@ -44,23 +40,34 @@ class DefaultController extends Controller
             ->add('address', TextType::class)
             ->add('lag', HiddenType::class)
             ->add('lng', HiddenType::class)
-            ->add('dateStart', DateType::class)
+            ->add('dateStart', DateType::class, array(
+                'widget' => 'single_text'
+            ))
             ->add('save', SubmitType::class, array('label' => 'Save name'))
             ->getForm();
+
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $userID = $this->getUser()->getId();
+            $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
+            $UserOjbect = $UserPdo->findOneById($userID);
+
             $em = $this->getDoctrine()->getManager();
             $data = $form["address"]->getData();
+
             $event->setCreatedAt(new \DateTime());
             $event->setPostedBy(0);
             $event->setValidate(1);
+
             $latLong = getLatLong($data);
             $latitude = $latLong['latitude']?$latLong['latitude']:'0';
             $longitude = $latLong['longitude']?$latLong['longitude']:'0';
             $event->setLag($latitude);
+
             $event->setLng($longitude);
             $event->setUser($UserOjbect);
+
             $em->persist($event);
             $em->flush();
             return $this->redirectToRoute('homepage');

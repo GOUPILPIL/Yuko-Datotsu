@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,8 +30,13 @@ class Event
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=60)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 60,
+     * )
      */
     private $name;
 
