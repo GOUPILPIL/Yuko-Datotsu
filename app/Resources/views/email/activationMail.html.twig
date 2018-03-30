@@ -1,0 +1,14 @@
+{% block subject %} Confirmation d'inscription {% endblock %}
+
+    {% block body_text %}
+    {% autoescape false %}
+
+    <h1> Bonjour {{ user.username }} ! </h1>
+
+    Ceci est un mail de validation :).
+    Confirme en cliquant ici :{{ confirmationUrl }}
+
+    Bisous
+
+    {% endautoescape %}
+    {% endblock %}

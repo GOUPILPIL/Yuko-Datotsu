@@ -63,7 +63,7 @@ class DefaultController extends Controller
 
             $event->setLat($latitude);
             $event->setLng($longitude);
-            
+
             $event->setUser($UserOjbect);
 
             $em->persist($event);
