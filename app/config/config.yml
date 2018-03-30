@@ -70,6 +70,7 @@ swiftmailer:
 fos_user:
     registration:
         confirmation:
+            template: /email/activationMail.html.twig
             enabled: false
         form:
                 type: AppBundle\Form\RegistrationFormType
@@ -81,5 +82,5 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
-    template: 'email/activationMail.email.twig'
+
 
