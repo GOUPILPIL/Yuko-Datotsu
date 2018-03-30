@@ -24,14 +24,14 @@ class DefaultController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('default/create.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
         ]);
     }
 
     /**
      * @Route("/event/create", name="eventCreation")
      */
-    public function eventCreation(Request $request,GeoHelper $geoHelper)
+    public function eventCreation(Request $request, GeoHelper $geoHelper)
     {
         $event = new Event();
 
@@ -49,7 +49,7 @@ class DefaultController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $userID = $this->getUser()->getId();
             $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
             $UserOjbect = $UserPdo->findOneById($userID);
@@ -58,8 +58,8 @@ class DefaultController extends Controller
             $data = $form["address"]->getData();
 
             $latLong = $geoHelper->getLatLong($data);
-            $latitude = $latLong['latitude']?$latLong['latitude']:'0';
-            $longitude = $latLong['longitude']?$latLong['longitude']:'0';
+            $latitude = $latLong['latitude'] ? $latLong['latitude'] : '0';
+            $longitude = $latLong['longitude'] ? $latLong['longitude'] : '0';
 
             $event->setLat($latitude);
             $event->setLng($longitude);
@@ -75,16 +75,24 @@ class DefaultController extends Controller
         ]);
 
     }
+
     /**
-     * @Route("/test", name="test")
+     * @Route("/event", name="event")
      */
-    public function test()
+    public function listAction(Request $request)
     {
-         $userID = $this->getUser()->getId();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $dql = "SELECT a FROM AppBundle:Event a";
+        $query = $em->createQuery($dql);
 
-
-        return new Response(
-            '<html><body>Id is = '.$userID.'</body></html>'
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
         );
+
+        // parameters to template
+        return $this->render('events/events.paginator.html.twig', array('pagination' => $pagination));
     }
 }
