@@ -23,7 +23,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('default/create.html.twig', [
+        return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
         ]);
     }
@@ -81,7 +81,7 @@ class DefaultController extends Controller
      */
     public function listAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em = $this->getDoctrine()->getManager();
         $dql = "SELECT a FROM AppBundle:Event a";
         $query = $em->createQuery($dql);
 
@@ -94,5 +94,18 @@ class DefaultController extends Controller
 
         // parameters to template
         return $this->render('events/events.paginator.html.twig', array('pagination' => $pagination));
+    }
+
+
+    /**
+     * @Route("/event/{id}", name="eventView")
+     */
+    public function eventView(request $request, $id)
+    {
+        $event= $this->getDoctrine()
+            ->getRepository("AppBundle:Event")
+            ->find($id);
+
+        return $this->render('events/event.view.html.twig', array('event' => $event));
     }
 }
