@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use AppBundle\Utils\GeoHelper;
 
 class DefaultController extends Controller
@@ -106,6 +105,55 @@ class DefaultController extends Controller
             ->getRepository("AppBundle:Event")
             ->find($id);
 
+        if (!$event) {
+            return New Response(
+                'No product found for id '.$id);
+        }
+
         return $this->render('events/event.view.html.twig', array('event' => $event));
+    }
+
+    /**
+     * @Route("/event/delete/{id}", name="deleteView")
+     */
+    public function deleteView(request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event= $this->getDoctrine()
+            ->getRepository("AppBundle:Event")
+            ->find($id);
+
+        if (!$event) {
+            return New Response(
+                'No product found for id '.$id);
+        }
+
+        $userID = $this->getUser();
+        $userFetched = $event->getUser();
+
+        if($userID == $userFetched)
+        {
+            $em->remove($event);
+            $em->flush();
+            return new Response("deleted");
+        }
+        return new Response($event->getUser(). " + ". $this->getUser());
+    }
+
+    /**
+     * @route("/event/edit/{id}", name="posts.edit", requirements={"id" = "\d+"}))
+     */
+    public function editAction(Request $request, Event $event)
+    {
+
+        if($form->isSubmitted() && $form->isValid()){
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('posts.index');
+        }
+
+        return $this->render('events/edit.html.twig', [
+            'events' => $event,
+            'form' => $form->createView()
+        ]);
     }
 }
