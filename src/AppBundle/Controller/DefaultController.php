@@ -6,13 +6,10 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Utils\GeoHelper;
+use AppBundle\Form\EventFormType;
 
 class DefaultController extends Controller
 {
@@ -34,17 +31,7 @@ class DefaultController extends Controller
     {
         $event = new Event();
 
-        $form = $this->createFormBuilder($event)
-            ->add('name', TextType::class)
-            ->add('description', TextType::class)
-            ->add('address', TextType::class)
-            ->add('lat', HiddenType::class)
-            ->add('lng', HiddenType::class)
-            ->add('dateStart', DateType::class, array(
-                'widget' => 'single_text'
-            ))
-            ->add('save', SubmitType::class, array('label' => 'Save name'))
-            ->getForm();
+        $form = $this->createForm(EventFormType::class, $event);
 
         $form->handleRequest($request);
 
@@ -141,19 +128,28 @@ class DefaultController extends Controller
     }
 
     /**
-     * @route("/event/edit/{id}", name="posts.edit", requirements={"id" = "\d+"}))
+     * @route("/event/edit/{event}", name="posts.edit", requirements={"id" = "\d+"}))
      */
     public function editAction(Request $request, Event $event)
     {
+        //Trouver comment gerer l'erreur d'un id qui n'existe pas
+        $userID = $this->getUser();
+        $userFetched = $event->getUser();
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('posts.index');
+        if($userID != $userFetched){
+            return new Response("GTFO");
         }
 
-        return $this->render('events/edit.html.twig', [
-            'events' => $event,
+        $form = $this->createForm(EventFormType::class, $event);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+        //Bla bla logic
+        }
+
+        return $this->render('events/create.html.twig', [
             'form' => $form->createView()
         ]);
+
     }
 }
