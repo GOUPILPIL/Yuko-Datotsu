@@ -10,7 +10,10 @@
     </style>
     {{ event.name }}
     {{ event.address }}
-   
+    {{ event.id }}
+    {%  if isAlive %}
+        <a href="{{ path('posts.edit',{ 'event':event.id }) }}"> edit </a>
+        {%endif  %}
     <div id="map"></div>
     <script>
 

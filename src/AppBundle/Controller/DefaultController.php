@@ -91,13 +91,25 @@ class DefaultController extends Controller
         $event= $this->getDoctrine()
             ->getRepository("AppBundle:Event")
             ->find($id);
+        if(!$event){
+            return new Response("GTFO");
+        }
+
+        $userID = $this->getUser();
+        $userFetched = $event->getUser();
+
+        if($userID == $userFetched){
+            $isAlive = 1;
+        }else{
+            $isAlive = 0;
+        }
 
         if (!$event) {
             return New Response(
                 'No product found for id '.$id);
         }
 
-        return $this->render('events/event.view.html.twig', array('event' => $event));
+        return $this->render('events/event.view.html.twig', array('event' => $event, 'isAlive' => $isAlive ));
     }
 
     /**
