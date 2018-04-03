@@ -8,12 +8,13 @@
             width: 100%;
         }
     </style>
-    {{ event.name }}
-    {{ event.address }}
-    {{ event.id }}
+   Name : {{ event.name }} <br>
+    Adress :{{ event.address }} <br>
+     Description :{{ event.description }} <br>
     {%  if isAlive %}
         <a href="{{ path('posts.edit',{ 'event':event.id }) }}"> edit </a>
         {%endif  %}
+    Map :
     <div id="map"></div>
     <script>
 

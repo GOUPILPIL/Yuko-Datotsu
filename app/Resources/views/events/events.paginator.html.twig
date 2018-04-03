@@ -17,7 +17,7 @@
             {# table body #}
             {% for article in pagination %}
                 <tr {% if loop.index is odd %}class="color"{% endif %}>
-                    <td> <a href=" {{ path('eventView',{ 'id':article.id }) }}">link</a>{{ article.id }}</td>
+                    <td> <a href=" {{ path('eventView',{ 'event':article.id }) }}">link</a>{{ article.id }}</td>
                     <td>{{ article.name }}</td>
                     <td>{{ article.dateStart | date('Y-m-d') }}</td>
                 </tr>

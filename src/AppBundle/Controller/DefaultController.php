@@ -68,7 +68,7 @@ class DefaultController extends Controller
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT a FROM AppBundle:Event a";
+        $dql = "SELECT a FROM AppBundle:Event a ORDER BY a.dateStart ASC";
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
@@ -84,29 +84,19 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/event/{id}", name="eventView")
+     * @Route("/event/{event}", name="eventView")
      */
-    public function eventView(request $request, $id)
+    public function eventView(request $request,Event $event)
     {
-        $event= $this->getDoctrine()
-            ->getRepository("AppBundle:Event")
-            ->find($id);
-        if(!$event){
-            return new Response("GTFO");
-        }
 
         $userID = $this->getUser();
         $userFetched = $event->getUser();
 
-        if($userID == $userFetched){
+        if($userID == $userFetched)
+        {
             $isAlive = 1;
-        }else{
+        }else {
             $isAlive = 0;
-        }
-
-        if (!$event) {
-            return New Response(
-                'No product found for id '.$id);
         }
 
         return $this->render('events/event.view.html.twig', array('event' => $event, 'isAlive' => $isAlive ));
@@ -115,27 +105,20 @@ class DefaultController extends Controller
     /**
      * @Route("/event/delete/{id}", name="deleteView")
      */
-    public function deleteView(request $request, $id)
+    public function deleteView(request $request,Event $event)
     {
-        $em = $this->getDoctrine()->getManager();
-        $event= $this->getDoctrine()
-            ->getRepository("AppBundle:Event")
-            ->find($id);
-
-        if (!$event) {
-            return New Response(
-                'No product found for id '.$id);
-        }
 
         $userID = $this->getUser();
         $userFetched = $event->getUser();
 
         if($userID == $userFetched)
         {
+            $em = $this->getDoctrine()->getManager();
             $em->remove($event);
             $em->flush();
             return new Response("deleted");
         }
+
         return new Response($event->getUser(). " + ". $this->getUser());
     }
 
@@ -144,19 +127,24 @@ class DefaultController extends Controller
      */
     public function editAction(Request $request, Event $event)
     {
-        //Trouver comment gerer l'erreur d'un id qui n'existe pas
         $userID = $this->getUser();
         $userFetched = $event->getUser();
 
-        if($userID != $userFetched){
+        if($userID != $userFetched)
+        {
             return new Response("GTFO");
         }
 
         $form = $this->createForm(EventFormType::class, $event);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-        //Bla bla logic
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('eventView', array('event'=> $event->getId()));
         }
 
         return $this->render('events/create.html.twig', [
@@ -164,5 +152,4 @@ class DefaultController extends Controller
         ]);
 
     }
-    // Faite des FORM de securisation de l'edit et tout wallah
 }
