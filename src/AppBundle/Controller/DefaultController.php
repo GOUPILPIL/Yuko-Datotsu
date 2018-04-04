@@ -82,6 +82,64 @@ class DefaultController extends Controller
         return $this->render('events/events.paginator.html.twig', array('pagination' => $pagination));
     }
 
+    /**
+     * @Route("/map", name="map")
+     */
+    public function mapAll(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $dql = "SELECT a FROM AppBundle:Event a";
+        $query = $em->createQuery($dql);
+        $patate = $query->getResult();
+        $return_arr = array();
+        foreach ($patate as $point) {
+            $row_array['lat'] = $point->getLat();
+            $row_array['lng'] = $point->getLng();
+            $row_array['name'] = $point->getName();
+            $row_array['address'] = $point->getAddress();
+            $row_array['Description'] = $point->getDescription();
+            array_push($return_arr,$row_array);
+        }
+
+        return $this->render('events/map.html.twig', array('marker' => json_encode($return_arr)));
+
+        /* OLD XML CODE
+        **
+        $dom = new \DOMDocument("1.0");
+        $node = $dom->createElement("markers");
+        $parnode = $dom->appendChild($node);
+
+
+        foreach ($patate as $point)
+        {
+            $node = $dom->createElement("marker");
+            $newnode = $parnode->appendChild($node);
+            $newnode->setAttribute("lat",$point->getLat());
+            $newnode->setAttribute("lng",$point->getLat());
+            $newnode->setAttribute("name",$point->getName());
+            $newnode->setAttribute("address", $point->getAddress());
+            $newnode->setAttribute("Description", $point->getDescription());
+        }
+        return $this->render('events/map.html.twig', array('marker' => $dom->saveXML()));
+        **
+        */
+
+
+        /* NEW XML CODE
+        **
+        $xml = new \SimpleXMLElement('<markers/>');
+
+        foreach ($patate as $point) {
+            $track = $xml->addChild('marker');
+            $track->addChild('name', $point->getName());
+            $track->addChild('address', $point->getAddress());
+            $track->addChild('lat', $point->getLat());
+            $track->addChild('lng', $point->getLat());
+        }
+        return $this->render('events/map.html.twig', array('marker' => ($xml->asXML())));
+        **
+        */
+    }
 
     /**
      * @Route("/event/{event}", name="eventView")

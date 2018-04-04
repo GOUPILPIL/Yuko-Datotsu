@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ marker }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <body>
+
+    <div id="map"></div>
+    <script>
+        var map;
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 52.415524, lng: -4.063066},
+                zoom: 7,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+
+            //  $.getJSON(json, function(json1) {
+            var json1 = {
+                "universities": [
+                    {
+                        "title": "Aberystwyth University",
+                        "website": "www.aber.ac.uk",
+                        "phone": "+44 (0)1970 623 111",
+                        "lat": 52.415524,
+                        "lng": -4.063066},
+                    {
+                        "title": "Bangor University",
+                        "website": "www.bangor.ac.uk",
+                        "phone": "+44 (0)1248 351 151",
+                        "lat": 53.229520,
+                        "lng": -4.129987},
+                    {
+                        "title": "Cardiff Metropolitan University",
+                        "website": "www.cardiffmet.ac.uk",
+                        "phone": "+44 (0)2920 416 138",
+                        "lat": 51.482708,
+                        "lng": -3.165881}
+                ]
+            };
+            $.each(json1.universities, function (key, data) {
+
+                var latLng = new google.maps.LatLng(data.lat, data.lng);
+
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    title: data.title
+                });
+
+
+                var strDescription = data.website + ", " + data.phone + ".";
+                var infowindow = new google.maps.InfoWindow();
+
+                bindInfoWindow(marker, map, infowindow, strDescription);
+
+                //    });
+
+            });
+
+        }
+
+        function bindInfoWindow(marker, map, infowindow, strDescription) {
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(strDescription);
+                infowindow.open(map, marker);
+            });
+        }
+
+    </script>
+
+
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChgkCStI_CzqTWxuteujDUeEBF90it_h8&callback=initMap"></script>
+
+
+{% endblock %}
