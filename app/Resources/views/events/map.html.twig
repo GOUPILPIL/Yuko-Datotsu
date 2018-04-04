@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-{{ marker }}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
@@ -32,47 +31,23 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             });
 
+            var json1 = '{{ marker }}';
 
-            //  $.getJSON(json, function(json1) {
-            var json1 = {
-                "universities": [
-                    {
-                        "title": "Aberystwyth University",
-                        "website": "www.aber.ac.uk",
-                        "phone": "+44 (0)1970 623 111",
-                        "lat": 52.415524,
-                        "lng": -4.063066},
-                    {
-                        "title": "Bangor University",
-                        "website": "www.bangor.ac.uk",
-                        "phone": "+44 (0)1248 351 151",
-                        "lat": 53.229520,
-                        "lng": -4.129987},
-                    {
-                        "title": "Cardiff Metropolitan University",
-                        "website": "www.cardiffmet.ac.uk",
-                        "phone": "+44 (0)2920 416 138",
-                        "lat": 51.482708,
-                        "lng": -3.165881}
-                ]
-            };
-            $.each(json1.universities, function (key, data) {
+            $.each(JSON.parse(json1.replace(/&quot;/g,'"')), function (key, data) {
 
                 var latLng = new google.maps.LatLng(data.lat, data.lng);
 
                 var marker = new google.maps.Marker({
                     position: latLng,
                     map: map,
-                    title: data.title
+                    title: data.name
                 });
 
 
-                var strDescription = data.website + ", " + data.phone + ".";
+                var strDescription = data.address + ", "+ ".";
                 var infowindow = new google.maps.InfoWindow();
 
                 bindInfoWindow(marker, map, infowindow, strDescription);
-
-                //    });
 
             });
 

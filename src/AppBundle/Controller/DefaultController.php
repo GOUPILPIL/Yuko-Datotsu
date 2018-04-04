@@ -92,9 +92,10 @@ class DefaultController extends Controller
         $query = $em->createQuery($dql);
         $patate = $query->getResult();
         $return_arr = array();
+        $return_arr[0] = "coucou";
         foreach ($patate as $point) {
             $row_array['lat'] = $point->getLat();
-            $row_array['lng'] = $point->getLng();
+            $row_array['lng'] = $point->getLng() ;
             $row_array['name'] = $point->getName();
             $row_array['address'] = $point->getAddress();
             $row_array['Description'] = $point->getDescription();
