@@ -98,7 +98,7 @@ class DefaultController extends Controller
             $row_array['lng'] = $point->getLng() ;
             $row_array['name'] = $point->getName();
             $row_array['address'] = $point->getAddress();
-            $row_array['Description'] = $point->getDescription();
+            $row_array['description'] = $point->getDescription();
             array_push($return_arr,$row_array);
         }
 

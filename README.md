@@ -25,7 +25,12 @@ Ressources and link about project :
   - As a User, i can appoint another User as Second Club Event if i am the Club Owner  
   - As a Moderator, i can accept or decline club/event subscription
 
-> First Push with some information
+----------- RESSOURCE :
+-Symfony 3.4
+-Api Google Maps
+-FOSuserbundle
+-KPN paginator
 
-> Objectif du premier sprint (date a definir)
-> Mise en place d'un systeme d'identification fonctionelle avec verification mail
+
+
+
