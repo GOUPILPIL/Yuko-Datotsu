@@ -29,6 +29,7 @@ Ressources and link about project :
 -Symfony 3.4
 -Api Google Maps
 -FOSuserbundle
+-FOS js routing
 -KPN paginator
 
 

@@ -99,51 +99,16 @@ class DefaultController extends Controller
             $row_array['name'] = $point->getName();
             $row_array['address'] = $point->getAddress();
             $row_array['description'] = $point->getDescription();
+            $row_array['id'] = $point->getId();
             array_push($return_arr,$row_array);
         }
 
         return $this->render('events/map.html.twig', array('marker' => json_encode($return_arr)));
 
-        /* OLD XML CODE
-        **
-        $dom = new \DOMDocument("1.0");
-        $node = $dom->createElement("markers");
-        $parnode = $dom->appendChild($node);
-
-
-        foreach ($patate as $point)
-        {
-            $node = $dom->createElement("marker");
-            $newnode = $parnode->appendChild($node);
-            $newnode->setAttribute("lat",$point->getLat());
-            $newnode->setAttribute("lng",$point->getLat());
-            $newnode->setAttribute("name",$point->getName());
-            $newnode->setAttribute("address", $point->getAddress());
-            $newnode->setAttribute("Description", $point->getDescription());
-        }
-        return $this->render('events/map.html.twig', array('marker' => $dom->saveXML()));
-        **
-        */
-
-
-        /* NEW XML CODE
-        **
-        $xml = new \SimpleXMLElement('<markers/>');
-
-        foreach ($patate as $point) {
-            $track = $xml->addChild('marker');
-            $track->addChild('name', $point->getName());
-            $track->addChild('address', $point->getAddress());
-            $track->addChild('lat', $point->getLat());
-            $track->addChild('lng', $point->getLat());
-        }
-        return $this->render('events/map.html.twig', array('marker' => ($xml->asXML())));
-        **
-        */
     }
 
     /**
-     * @Route("/event/{event}", name="eventView")
+     * @Route("/event/{event}",options = { "expose" = true }, name="eventView")
      */
     public function eventView(request $request,Event $event)
     {
@@ -182,7 +147,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @route("/event/edit/{event}", name="posts.edit", requirements={"id" = "\d+"}))
+     * @route("/event/edit/{event}", name="editView", requirements={"id" = "\d+"}))
      */
     public function editAction(Request $request, Event $event)
     {
