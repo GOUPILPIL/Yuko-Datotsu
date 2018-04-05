@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% if searchform %}
+    {{ form_start(searchform) }}
+    {{ form_widget(searchform) }}
+    {{ form_end(searchform) }}
+{% endif %}
+    {% for event in events %}
+        <li>
+            {{ event.name }}
+            <td> <a href=" {{ path('eventView',{ 'event':event.id }) }}">link</a>{{ event.id }}</td>
+        </li>
+    {% endfor %}
+{% endblock %}

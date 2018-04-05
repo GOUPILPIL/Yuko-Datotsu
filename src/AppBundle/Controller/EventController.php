@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Utils\GeoHelper;
 use AppBundle\Form\EventFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class EventController extends Controller
 {
@@ -144,6 +147,64 @@ class EventController extends Controller
 
         return $this->render('events/event.create.html.twig', [
             'form' => $form->createView()
+        ]);
+
+    }
+    /**
+     * @route("/event/search", name="event.search")
+     */
+    public function searchAction(Request $request)
+    {
+        $searchform = $this->createFormBuilder()
+            ->add('search', TextType::class)
+            ->add('send', SubmitType::class)
+            ->getForm();
+
+        $searchform->handleRequest($request);
+
+        if($searchform->isSubmitted())
+        {
+            $searchstring = $searchform->getData();
+            return $this->redirectToRoute('event.search.arg', $searchstring );
+        }
+
+        return $this->render('events/events.search.html.twig', [
+            'searchform' => $searchform->createView(),
+            'posts' => null
+        ]);
+
+    }/**
+     * @route("/event/search/{search}", name="event.search.arg")
+     * @Method({"POST", "GET"})
+     */
+    public function searchArg(Request $request, $search)
+    {
+        $searchform = $this->createFormBuilder()
+            ->add('search', TextType::class)
+            ->add('send', SubmitType::class)
+            ->getForm();
+
+        $searchform->handleRequest($request);
+
+        if($searchform->isSubmitted())
+        {
+            $searchstring = $searchform->getData();
+            return $this->redirectToRoute('event.search.arg', $searchstring );
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT a FROM AppBundle:Event a WHERE a.name LIKE :string OR a.description LIKE :string');
+        $query->setParameter('string', '%'.$search.'%');
+        $response = $query->getResult();
+
+       /* $repository = $this->getDoctrine()->getRepository('AppBundle:Event');
+        $posts = $repository->findBy(
+            ['name' => $search]
+        ); */
+
+        return $this->render('events/events.search.html.twig', [
+            'searchform' => $searchform->createView(),
+            'events' => $response
         ]);
 
     }
