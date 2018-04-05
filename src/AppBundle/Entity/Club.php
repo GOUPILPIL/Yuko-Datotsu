@@ -75,6 +75,29 @@ class Club
      */
     private $validate;
 
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return Event
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 
     /**
      * Get id
@@ -252,6 +275,11 @@ class Club
     public function getValidate()
     {
         return $this->validate;
+    }
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->validate = 1;
     }
 }
 

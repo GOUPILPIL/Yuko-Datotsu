@@ -15,11 +15,10 @@
             </tr>
 
             {# table body #}
-            {% for article in pagination %}
+            {% for club in pagination %}
                 <tr {% if loop.index is odd %}class="color"{% endif %}>
-                    <td> <a href=" {{ path('eventView',{ 'event':article.id }) }}">link</a>{{ article.id }}</td>
-                    <td>{{ article.name }}</td>
-                    <td>{{ article.dateStart | date('Y-m-d') }}</td>
+                    <td> <a href=" {{ path('clubView',{ 'club':club.id }) }}">link</a>{{ club.id }}</td>
+                    <td>{{ club.name }}</td>
                 </tr>
             {% endfor %}
         </table>

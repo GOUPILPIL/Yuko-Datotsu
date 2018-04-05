@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <script type="text/javascript">var latVar = {{ event.lat }}</script>
-    <script type="text/javascript">var lngVar = {{ event.lng }}</script>
+    <script type="text/javascript">var latVar = {{ club.lat }}</script>
+    <script type="text/javascript">var lngVar = {{ club.lng }}</script>
     <style>
         #map {
             height: 400px;
             width: 100%;
         }
     </style>
-   Name : {{ event.name }} <br>
-    Adress :{{ event.address }} <br>
-     Description :{{ event.description }} <br>
+   Name : {{ club.name }} <br>
+    Adress :{{ club.address }} <br>
+     Description :{{ club.description }} <br>
     {%  if isAlive %}
-        <a href="{{ path('editView',{ 'event':event.id }) }}"> edit </a>
-        <a href="{{ path('deleteView',{ 'event':event.id }) }}"> delete </a>
+        <a href="{{ path('clubEdit',{ 'club':club.id }) }}"> edit </a>
+        <a href="{{ path('clubDelete',{ 'club':club.id }) }}"> delete </a>
         {%endif  %}
 
     Map :
