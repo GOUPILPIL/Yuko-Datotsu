@@ -50,7 +50,7 @@ class EventController extends Controller
             $em->flush();
             return $this->redirectToRoute('homepage');
         }
-        return $this->render('events/create.html.twig', [
+        return $this->render('events/event.create.html.twig', [
             'form' => $form->createView()
         ]);
 
@@ -142,7 +142,7 @@ class EventController extends Controller
             return $this->redirectToRoute('eventView', array('event'=> $event->getId()));
         }
 
-        return $this->render('events/create.html.twig', [
+        return $this->render('events/event.create.html.twig', [
             'form' => $form->createView()
         ]);
 

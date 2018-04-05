@@ -41,7 +41,7 @@ class DefaultController extends Controller
             array_push($return_arr,$row_array);
         }
 
-        return $this->render('events/map.html.twig', array('marker' => json_encode($return_arr)));
+        return $this->render('map.html.twig', array('marker' => json_encode($return_arr)));
 
     }
 

@@ -24,6 +24,10 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Event", mappedBy="user")
      */
     private $events;
+    /**
+     * @ORM\OneToMany(targetEntity="Club", mappedBy="user")
+     */
+    private $clubs;
 
     /**
      * @ORM\Column(type="integer")
