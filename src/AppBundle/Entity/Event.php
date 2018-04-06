@@ -349,7 +349,7 @@ class Event
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->validate = 1;
+        $this->validate = true;
     }
 }
 

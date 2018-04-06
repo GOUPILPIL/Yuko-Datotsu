@@ -6,6 +6,7 @@ namespace AppBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -46,6 +47,21 @@ class User extends BaseUser
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->clubs = new ArrayCollection();
         parent::__construct();
+    }
+    /**
+     * @return Collection|events[]
+     */
+    public function getEvent()
+    {
+        return $this->events;
+    }
+    /**
+     * @return Collection|clubs[]
+     */
+    public function getClub()
+    {
+        return $this->clubs;
     }
 }

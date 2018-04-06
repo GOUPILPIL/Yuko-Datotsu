@@ -27,7 +27,6 @@ class ClubFormType extends AbstractType
             ->add('address', TextType::class)
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
-
             ->add('save', SubmitType::class, array('label' => 'Save name'));
     }
 

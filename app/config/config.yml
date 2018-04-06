@@ -10,7 +10,8 @@ parameters:
 
 framework:
     #esi: ~
-    translator: ~
+    translator:
+        { fallbacks: [ "en" ] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -97,3 +98,22 @@ knp_paginator:
         pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'     # sliding pagination controls template
         sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
         filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+easy_admin:
+    site_name: '<em style="color: rgb(31,31,31);">Yuko Datotsu</em>'
+    design:
+            brand_color: '#F8F9FA'
+            color_scheme: 'light'
+    entities:
+        Event:
+            class: AppBundle\Entity\Event
+        Club:
+            class: AppBundle\Entity\Club
+        User:
+            class: AppBundle\Entity\User
+            form:
+                fields:
+                    - { property: 'email', type_options: { by_reference: false } }
+                    - { property: 'username', type_options: { by_reference: false } }
+                    - { property: 'email', type_options: { by_reference: false } }
+                    - { property: 'roles', type_options: { by_reference: false } }
+                    - { property: 'reputation', type_options: { by_reference: false } }
