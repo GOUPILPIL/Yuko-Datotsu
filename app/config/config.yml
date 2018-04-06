@@ -101,11 +101,24 @@ knp_paginator:
 easy_admin:
     site_name: '<em style="color: rgb(31,31,31);">Yuko Datotsu</em>'
     design:
-            brand_color: '#F8F9FA'
+            brand_color: '#C0D890'
             color_scheme: 'light'
     entities:
+        EventToValidate:
+                    class: AppBundle\Entity\Event
+                    list:
+                        dql_filter: 'entity.validate = 0'
+                        fields: ['id', 'name', 'description', 'address', 'dateStart', 'validate']
+        ClubToValidate:
+                            class: AppBundle\Entity\Club
+                            list:
+                                dql_filter: 'entity.validate = 0'
+                                fields: ['id', 'name', 'description', 'address', 'dateStart', 'validate']
         Event:
             class: AppBundle\Entity\Event
+            label: 'Events'
+            list:
+                fields: ['id', 'name', 'description', 'address', 'dateStart', 'validate']
         Club:
             class: AppBundle\Entity\Club
         User:
