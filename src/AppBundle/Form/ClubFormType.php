@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 
 class ClubFormType extends AbstractType
@@ -23,7 +24,7 @@ class ClubFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class)
-            ->add('description', TextType::class)
+            ->add('description', CKEditorType::class, array('config' => array('uiColor' => '#ffffff', 'toolbar' => 'standard')))
             ->add('address', TextType::class)
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)

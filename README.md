@@ -25,13 +25,13 @@ Ressources and link about project :
   - As a User, i can appoint another User as Second Club Event if i am the Club Owner  
   - As a Moderator, i can accept or decline club/event subscription
 
------------ RESSOURCE :
--Symfony 3.4
--Api Google Maps
--FOSuserbundle
--FOS js routing
--KPN paginator
-
+#----------- RESSOURCE :
+ - Symfony 3.4
+ - Api Google Maps
+ - FOSuserbundle
+ - FOS js routing
+ - KPN paginator
+ - EASYADMIN symfony Bundle
 
 
 
