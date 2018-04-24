@@ -23,7 +23,7 @@ class DefaultController extends Controller
     /**
      *Display a map with All event on it.
      *
-     * To do : do something for description, put good name in it, display event qui ne sont pas passee. 
+     * To do : do something for description, put good name in it, display event qui ne sont pas passee.
      * @Route("/map", name="map")
      */
     public function mapAll(Request $request)

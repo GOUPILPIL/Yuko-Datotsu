@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Event
@@ -27,6 +29,46 @@ class Event
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="events")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $categories;
+
+    /**
+     * Add category
+     *
+     * @param Category $category
+     *
+     * @return Event
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categorys->removeElement($category);
+    }
+
+    /**
+     * Get category
+     *
+     * @return Category $category
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 
     /**
      * @var string
@@ -348,6 +390,7 @@ class Event
     }
     public function __construct()
     {
+        $this->categorys = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->validate = true;
     }

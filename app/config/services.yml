@@ -37,3 +37,6 @@ services:
             class: AppBundle\Form\RegistrationFormType
             tags:
                 - { name: form.type }
+    AppBundle\DataFixtures\:
+            resource: '../../src/AppBundle/DataFixtures'
+            tags: ['doctrine.fixture.orm']
