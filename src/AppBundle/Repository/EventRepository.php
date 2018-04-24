@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByWildStarName($search)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT a FROM AppBundle:Event a WHERE a.name LIKE :string OR a.description LIKE :string'
+            )
+            ->setParameter('string', '%'.$search.'%')
+            ->getResult();
+    }
 }

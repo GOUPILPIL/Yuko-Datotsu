@@ -21,6 +21,9 @@ class DefaultController extends Controller
     }
 
     /**
+     *Display a map with All event on it.
+     *
+     * To do : do something for description, put good name in it, display event qui ne sont pas passee. 
      * @Route("/map", name="map")
      */
     public function mapAll(Request $request)
@@ -30,7 +33,6 @@ class DefaultController extends Controller
         $query = $em->createQuery($dql);
         $patate = $query->getResult();
         $return_arr = array();
-        $return_arr[0] = "coucou";
         foreach ($patate as $point) {
             $row_array['lat'] = $point->getLat();
             $row_array['lng'] = $point->getLng() ;

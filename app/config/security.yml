@@ -11,6 +11,8 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
+        in_memory:
+                    memory: ~
 
     firewalls:
         main:
@@ -31,9 +33,4 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/event/create, role: ROLE_USER  }
-
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
-    providers:
-        in_memory:
-            memory: ~
 

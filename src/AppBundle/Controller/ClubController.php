@@ -84,15 +84,7 @@ class ClubController extends Controller
     public function clubView(request $request,Club $club)
     {
 
-        $userID = $this->getUser();
-        $userFetched = $club->getUser();
-
-        if($userID == $userFetched)
-        {
-            $isAlive = 1;
-        }else {
-            $isAlive = 0;
-        }
+        $isAlive = ($this->getUser() == $club->getUser()) ? 1 : 0;
 
         return $this->render('clubs/club.view.html.twig', array('club' => $club, 'isAlive' => $isAlive ));
     }
