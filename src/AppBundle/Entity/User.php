@@ -30,20 +30,6 @@ class User extends BaseUser
      */
     private $clubs;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $reputation = 0;
-
-    public function getReputation()
-    {
-        return $this->reputation;
-    }
-    public function setReputation($reputation)
-    {
-        $this->reputation = $reputation;
-    }
-
     public function __construct()
     {
         $this->events = new ArrayCollection();

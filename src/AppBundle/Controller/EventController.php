@@ -123,7 +123,7 @@ class EventController extends Controller
     /**
      * @route("/event/edit/{event}", name="editView", requirements={"event" = "\d+"}))
      */
-    public function editAction(Request $request, Event $event)
+    public function editAction(Request $request, Event $event, GeoHelper $geoHelper)
     {
         $userID = $this->getUser();
         $userFetched = $event->getUser();
@@ -139,6 +139,14 @@ class EventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $data = $form["address"]->getData();
+
+            $latLong = $geoHelper->getLatLong($data);
+            $latitude = $latLong['latitude'] ? $latLong['latitude'] : '0';
+            $longitude = $latLong['longitude'] ? $latLong['longitude'] : '0';
+
+            $event->setLat($latitude);
+            $event->setLng($longitude);
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush();

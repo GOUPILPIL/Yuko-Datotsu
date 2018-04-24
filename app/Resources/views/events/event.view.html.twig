@@ -8,16 +8,24 @@
             width: 100%;
         }
     </style>
-   Name : {{ event.name }} <br>
-    Adress :{{ event.address }} <br>
-     Description :{{ event.description }} <br>
-    {%  if isAlive %}
-        <a href="{{ path('editView',{ 'event':event.id }) }}"> edit </a>
-        <a href="{{ path('deleteView',{ 'event':event.id }) }}"> delete </a>
-        {%endif  %}
+    <div class="container">
+        <h1 style="text-align: center;padding: 30px">{{ event.name }} </h1>
+        <div class="row">
+            <div style="background-color: #f8f9fa" class=" border rounded col-lg-6 col-12">{{ event.description }} <br> Adress : {{ event.address }} <br> </div>
+            <div class="col-lg-6 col-12">
+                <div id="map"></div>
+            </div>
+            <div style="padding: 10px" class="col-12">
+                {%  if isAlive %}
+                    <a class="btn btn-success" href="{{ path('editView',{ 'event':event.id }) }}"> edit </a>
+                    <a class="btn btn-danger" href="{{ path('deleteView',{ 'event':event.id }) }}"> delete </a>
+                {%endif  %}
+            </div>
+        </div>
 
-    Map :
-    <div id="map"></div>
+
+
+    </div>
     <script>
 
         function initMap() {
