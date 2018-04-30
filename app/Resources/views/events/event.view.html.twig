@@ -11,7 +11,16 @@
     <div class="container">
         <h1 style="text-align: center;padding: 30px">{{ event.name }} </h1>
         <div class="row">
-            <div style="background-color: #f8f9fa" class=" border rounded col-lg-6 col-12">{{ event.description }} <br> Adress : {{ event.address }} <br> </div>
+            <div style="background-color: #f8f9fa" class=" border rounded col-lg-6 col-12">{{ event.description }} <br> Adress : {{ event.address }} <br>
+                {% if not event.categories.empty %}
+                    <p>
+                        Categories:
+                        {% for category in event.categories %}
+                            {{ category.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
             <div class="col-lg-6 col-12">
                 <div id="map"></div>
             </div>

@@ -57,13 +57,12 @@ class Event
      */
     public function removeCategory(Category $category)
     {
-        $this->categorys->removeElement($category);
+        $this->categories->removeElement($category);
     }
 
     /**
      * Get category
      *
-     * @return Category $category
      */
     public function getCategories()
     {
@@ -390,7 +389,7 @@ class Event
     }
     public function __construct()
     {
-        $this->categorys = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->validate = true;
     }

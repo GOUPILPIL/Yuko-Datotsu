@@ -9,6 +9,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -28,6 +29,18 @@ class EventFormType extends AbstractType
             ->add('address', TextType::class)
             ->add('lat', HiddenType::class)
             ->add('lng', HiddenType::class)
+            ->add('categories', ChoiceType::class, array(
+                'choices' => array(
+                    'Compétition Individuelle' => '1',
+                    'Compétition Equipe' => '2',
+                    'Stage'   => '3',
+                    'Passage de grade' => '4',
+                ),
+                    'expanded'  => true,
+                    'mapped' => false,
+                    'multiple' => true,
+                )
+            )
             ->add('dateStart', DateType::class, array(
                 'widget' => 'single_text'
             ))

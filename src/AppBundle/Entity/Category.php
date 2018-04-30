@@ -31,7 +31,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="Event", mappedBy="categories")
      */
     private $events;
 

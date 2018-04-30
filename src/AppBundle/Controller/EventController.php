@@ -56,6 +56,8 @@ class EventController extends Controller
 
             $event->setUser($UserOjbect);
 
+            $cat = $form["categories"];
+            $event->addCategory($cat);
             $em->persist($event);
             $em->flush();
             return $this->redirectToRoute('homepage');
@@ -163,6 +165,49 @@ class EventController extends Controller
         return $this->render('events/event.create.html.twig', [
             'form' => $form->createView()
         ]);
+
+    }/**
+     * TEST MY SHIT
+     * if you are not the owner, return a response with message
+     * @route("/event/edit/test/{event}", name="editViewz", requirements={"event" = "\d+"}))
+     */
+    public function editActiontest(Request $request, Event $event)
+    {
+
+        if($this->getUser() != $event->getUser())
+        {
+            return new Response("You are not the club owner !");
+        }
+        $em = $this->getDoctrine()->getManager();
+        $listCategories = $em->getRepository('AppBundle:Category')->findAll();
+        foreach ($listCategories as $category) {
+
+            $event->addCategory($category);
+
+        }
+        $em->flush();
+
+        /*$form = $this->createForm(EventFormType::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $data = $form["address"]->getData();
+
+            $latLong = $geoHelper->getLatLong($data);
+            $latitude = $latLong['latitude'] ? $latLong['latitude'] : '0';
+            $longitude = $latLong['longitude'] ? $latLong['longitude'] : '0';
+
+            $event->setLat($latitude);
+            $event->setLng($longitude);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('eventView', array('event'=> $event->getId()));
+        }*/
+
+        return new response (dump($event->getCategories()));
 
     }
     /**
