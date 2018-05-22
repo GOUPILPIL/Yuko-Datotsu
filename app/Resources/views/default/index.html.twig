@@ -1,15 +1,91 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-    <div class="col-lg-6 col-sm-12">
-        <h1>Bienvenue sur yuko - datotsu, le projet open-source de partage d'evenement / club</h1>
-        Bonjour bonjour
-    </div>
-    <div class="col-lg-6 col-sm-12">
-        Other side test
-    </div>
-    </div>
-</div>
+
+    <meta name="viewport" content="initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('csslandingpage/landing-page.min.css') }}">
+    <!-- Image Showcases -->
+    <section class="showcase">
+        <div class="container-fluid p-0">
+            <div class="row no-gutters">
+
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('img/bg-showcase-1.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Partage d'evenement...</h2>
+                    <p class="lead mb-0">Yuko-Datotsu est une plate-forme permettant de répertorier tous les événements lié au kendo <br>
+                        Qu'il s'agisse de stage, de competition ou bien meme de passage de grade.
+                    </p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 text-white showcase-img" style="background-image: url('img/bg-showcase-2.jpg');"></div>
+                <div class="col-lg-6 my-auto showcase-text">
+                    <h2>Et de club :)</h2>
+                    <p class="lead mb-0">Il y a aussi une section Club pour trouver un endroit ou pratiquer proche de chez vous !</p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('img/bg-showcase-3.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Plateforme communautaire !</h2>
+                    <p class="lead mb-0">Yuko Datotsu vie grace a ses utilisateurs, tout le monde peut poster un evenement ou une description de son club !</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials text-center bg-light">
+        <div class="container">
+            <h2 class="mb-5">Carte des evenements à venir</h2>
+            <div class="row">
+                <div id="map" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        var map;
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 48.856614, lng: 2.3522219},
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var json1 = '{{ marker }}';
+
+            $.each(JSON.parse(json1.replace(/&quot;/g,'"')), function (key, data) {
+
+                var latLng = new google.maps.LatLng(data.lat, data.lng);
+
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    title: data.name
+                });
+                var X = Number(data.id);
+                var strDescription = data.address + ", <br>"+ data.description + ". <br>" + "<a href=\"" + Routing.generate('eventView', {event: X}) + "\">link</a> ";
+
+                var infowindow = new google.maps.InfoWindow();
+
+                bindInfoWindow(marker, map, infowindow, strDescription);
+
+            });
+
+        }
+
+        function bindInfoWindow(marker, map, infowindow, strDescription) {
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(strDescription);
+                infowindow.open(map, marker);
+            });
+        }
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChgkCStI_CzqTWxuteujDUeEBF90it_h8&callback=initMap"></script>
+
 {% endblock %}

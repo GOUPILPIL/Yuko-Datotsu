@@ -7,6 +7,9 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
@@ -54,7 +57,17 @@
         {% block content %}{% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
-    </body>
-</html>
+
+        <!-- <footer class="footer bg-light" style="position:fixed;
+        bottom:0px;
+        width:100%;
+     text-align: center;">
+             <div class="container">
+                 <div class="row">
+                  Footer ?
+            </div>
+        </div>
+    </footer>-->
 
 <script src="{{ asset('build/app.js') }}"></script>
+</body>

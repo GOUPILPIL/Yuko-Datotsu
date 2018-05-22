@@ -14,7 +14,7 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery(
-                'SELECT a FROM AppBundle:Event a WHERE a.name LIKE :string OR a.description LIKE :string'
+                'SELECT a FROM AppBundle:Event a WHERE a.name LIKE :string OR a.description LIKE :string ORDER BY a.dateStart ASC'
             )
             ->setParameter('string', '%'.$search.'%')
             ->getResult();

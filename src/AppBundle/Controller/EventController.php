@@ -27,8 +27,6 @@ class EventController extends Controller
      *
      * GeoHelper object give you latitute and longitude of an address.
      *
-     * To do : Redirect to /event/{newEventId}
-     *
      * @Route("/event/create", name="eventCreation")
      */
     public function eventCreation(Request $request, GeoHelper $geoHelper)
@@ -56,11 +54,10 @@ class EventController extends Controller
 
             $event->setUser($UserOjbect);
 
-            $cat = $form["categories"];
-            $event->addCategory($cat);
             $em->persist($event);
             $em->flush();
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('eventView', array(
+                'event' => $event->getId()));
         }
         return $this->render('events/event.create.html.twig', [
             'form' => $form->createView()
@@ -72,12 +69,28 @@ class EventController extends Controller
      * Display 5 event (basic information and link to full view of the event) in a page with a link to another page with 5 next event.
      * Order by date
      *
-     * To do : Dql into Repository
-     *
      * @Route("/event", name="event")
      */
     public function listAction(Request $request)
     {
+        $searchform = $this->createFormBuilder()
+            ->add('search', TextType::class)
+            ->add('send', SubmitType::class)
+            ->getForm();
+
+        $searchform->handleRequest($request);
+
+        if($searchform->isSubmitted())
+        {
+            $searchstring = $searchform->getData();
+            return $this->redirectToRoute('event.search.arg', $searchstring );
+        }
+        /*
+         * return $this->render('events/events.search.html.twig', [
+            'searchform' => $searchform->createView(),
+            'events' => null
+        ]);
+         */
         $em = $this->getDoctrine()->getManager();
         $dql = "SELECT a FROM AppBundle:Event a ORDER BY a.dateStart ASC";
         $query = $em->createQuery($dql);
@@ -90,7 +103,7 @@ class EventController extends Controller
         );
 
         // parameters to template
-        return $this->render('events/events.paginator.html.twig', array('pagination' => $pagination));
+        return $this->render('events/events.paginator.html.twig', array('pagination' => $pagination, 'searchform' => $searchform->createView()));
     }
 
 
@@ -167,7 +180,6 @@ class EventController extends Controller
         ]);
 
     }/**
-     * TEST MY SHIT
      * if you are not the owner, return a response with message
      * @route("/event/edit/test/{event}", name="editViewz", requirements={"event" = "\d+"}))
      */
