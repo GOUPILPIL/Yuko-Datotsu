@@ -37,6 +37,11 @@
                 </ul>
                 <div>
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path("easyadmin") }}">
+                                <button class="btn btn-outline-info my-2 " style="margin-right: 10px;" type="submit">Administration</button>
+                            </a>
+                        {% endif %}
                         <a href="{{ path("fos_user_profile_show") }}">
                             <button class="btn btn-outline-success my-2 " style="margin-right: 10px;" type="submit">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}</button>
                         </a>
@@ -57,17 +62,6 @@
         {% block content %}{% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
-
-        <!-- <footer class="footer bg-light" style="position:fixed;
-        bottom:0px;
-        width:100%;
-     text-align: center;">
-             <div class="container">
-                 <div class="row">
-                  Footer ?
-            </div>
-        </div>
-    </footer>-->
 
 <script src="{{ asset('build/app.js') }}"></script>
 </body>

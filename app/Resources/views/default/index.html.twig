@@ -68,7 +68,7 @@
                     title: data.name
                 });
                 var X = Number(data.id);
-                var strDescription = data.address + ", <br>"+ data.description + ". <br>" + "<a href=\"" + Routing.generate('eventView', {event: X}) + "\">link</a> ";
+                var strDescription = data.name + ", <br>"+ data.address + ". <br>" + "<a href=\"" + Routing.generate('eventView', {event: X}) + "\">link</a> ";
 
                 var infowindow = new google.maps.InfoWindow();
 

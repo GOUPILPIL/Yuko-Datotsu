@@ -72,7 +72,7 @@ fos_user:
     registration:
         confirmation:
             template: /email/activationMail.html.twig
-            enabled: false
+            enabled: true
         form:
                 type: AppBundle\Form\RegistrationFormType
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'

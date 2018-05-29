@@ -21,6 +21,7 @@ class GeoHelper
             //Get latitude and longitute from json data
             $data['latitude']  = $output->results[0]->geometry->location->lat;
             $data['longitude'] = $output->results[0]->geometry->location->lng;
+
             //Return latitude and longitude of the given address
             if(!empty($data)){
                 return $data;

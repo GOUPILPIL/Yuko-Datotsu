@@ -25,7 +25,7 @@ class ClubController extends Controller
     {
         $club = new Club();
 
-        $form = $this->createForm(ClubFormType::class, $club); // SOMETHING TO DO
+        $form = $this->createForm(ClubFormType::class, $club);
 
         $form->handleRequest($request);
 

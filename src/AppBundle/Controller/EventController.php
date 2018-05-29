@@ -38,21 +38,18 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userID = $this->getUser()->getId();
-            $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
-            $UserOjbect = $UserPdo->findOneById($userID);
-
             $em = $this->getDoctrine()->getManager();
-            $data = $form["address"]->getData();
+            $UserPdo = $this->getDoctrine()->getRepository('AppBundle:User');
+            $UserOjbect = $UserPdo->findOneById($this->getUser()->getId());
 
-            $latLong = $geoHelper->getLatLong($data);
+            $event->setUser($UserOjbect);
+
+            $latLong = $geoHelper->getLatLong($form["address"]->getData());
             $latitude = $latLong['latitude'] ? $latLong['latitude'] : '0';
             $longitude = $latLong['longitude'] ? $latLong['longitude'] : '0';
 
             $event->setLat($latitude);
             $event->setLng($longitude);
-
-            $event->setUser($UserOjbect);
 
             $em->persist($event);
             $em->flush();
@@ -85,12 +82,6 @@ class EventController extends Controller
             $searchstring = $searchform->getData();
             return $this->redirectToRoute('event.search.arg', $searchstring );
         }
-        /*
-         * return $this->render('events/events.search.html.twig', [
-            'searchform' => $searchform->createView(),
-            'events' => null
-        ]);
-         */
         $em = $this->getDoctrine()->getManager();
         $dql = "SELECT a FROM AppBundle:Event a ORDER BY a.dateStart ASC";
         $query = $em->createQuery($dql);
@@ -198,26 +189,6 @@ class EventController extends Controller
 
         }
         $em->flush();
-
-        /*$form = $this->createForm(EventFormType::class, $event);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $data = $form["address"]->getData();
-
-            $latLong = $geoHelper->getLatLong($data);
-            $latitude = $latLong['latitude'] ? $latLong['latitude'] : '0';
-            $longitude = $latLong['longitude'] ? $latLong['longitude'] : '0';
-
-            $event->setLat($latitude);
-            $event->setLng($longitude);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
-            $em->flush();
-            return $this->redirectToRoute('eventView', array('event'=> $event->getId()));
-        }*/
 
         return new response (dump($event->getCategories()));
 

@@ -15,8 +15,8 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT a FROM AppBundle:Event a WHERE a.dateStart >= CURRENT_DATE()";
-        $query = $em->createQuery($dql);
+        $query = $em->createQuery("SELECT a FROM AppBundle:Event a WHERE a.dateStart > :today")
+            ->setParameter('today', new \DateTime());
         $patate = $query->getResult();
         $return_arr = array();
         foreach ($patate as $point) {

@@ -29,7 +29,6 @@ class AppFixtures extends Fixture
         );
 
         foreach ($names as $name) {
-            // On crée la catégorie
             $category = new Category();
             $category->setName($name);
             $manager->persist($category);
